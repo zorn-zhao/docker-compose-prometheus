@@ -167,3 +167,68 @@ groups:
 #       severity: 严重
 #     annotations:
 #       summary: " {{ $labels.instance }} 上的磁盘将在大约7天内填满"
+
+
+
+# MYSQL数据库监控规则
+- name: MySQL数据库监控规则
+  rules:
+#mysql状态检测
+  - alert: MySQL Status
+    expr: mysql_up == 0
+    for: 10s
+    labels:
+      severity: warning
+    annotations:
+      summary: "{{ $labels.instance }} Mysql服务 !!!"
+      description: "{{ $labels.instance }} Mysql服务不可用  请检查!"
+
+#mysql主从IO线程停止时触发告警
+  - alert: MySQL Slave IO Thread Status
+    expr: mysql_slave_status_slave_io_running == 0
+    for: 5s
+    labels:
+      severity: warning
+    annotations:
+      summary: "{{ $labels.instance }} Mysql从节点IO线程"
+      description: "Mysql主从IO线程故障，请检测!"
+
+#mysql主从sql线程停止时触发告警
+  - alert: MySQL Slave SQL Thread Status 
+    expr: mysql_slave_status_slave_sql_running == 0
+    for: 5s 
+    labels:
+      severity: error
+    annotations: 
+      summary: "{{$labels.instance}}: MySQL Slave SQL Thread has stop !!!"
+      description: "检测MySQL主从SQL线程运行状态"
+      
+#mysql主从延时状态告警
+  - alert: MySQL Slave Delay Status 
+    expr: mysql_slave_status_sql_delay == 30
+    for: 5s 
+    labels:
+      severity: warning
+    annotations: 
+      summary: "{{$labels.instance}}: MySQL 主从延迟超过 30s !!!"
+      description: "检测MySQL主从延时状态"
+      
+#mysql连接数告警
+  - alert: Mysql_Too_Many_Connections
+    expr: rate(mysql_global_status_threads_connected[5m]) > 200
+    for: 2m
+    labels:
+      severity: warning
+    annotations:
+      summary: "{{$labels.instance}}: 连接数过多"
+      description: "{{$labels.instance}}: 连接数过多，请处理 ,(current value is: {{ $value }})！"  
+ 
+ #mysql慢查询有点多告警
+  - alert: Mysql_Too_Many_slow_queries
+    expr: rate(mysql_global_status_slow_queries[5m]) > 3
+    for: 2m
+    labels:
+      severity: warning
+    annotations:
+      summary: "{{$labels.instance}}: 慢查询有点多，请检查处理！"
+      description: "{{$labels.instance}}: Mysql slow_queries is more than 3 per second ,(current value is: {{ $value }})"
