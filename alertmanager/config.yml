@@ -47,7 +47,7 @@ receivers:
   email_configs:
   - to: 'xxxx.com'
 
-# 抑制规则
+# 抑制规则,规则未生效，没什么卵用
 # inhibit_rules:
 #  - source_match:
 #      alertname: 高负载警告
