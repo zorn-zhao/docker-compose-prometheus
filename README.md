@@ -1,5 +1,6 @@
 # docker-compose-prometheus
-通过docker compose部署prometheus、alertmanager、grafana、node-exporter、cadvisor服务端。通过通过docker compose部署node-exporter、cadvisor客户端
+通过docker compose部署prometheus、alertmanager、grafana、node-exporter、cadvisor服务端。
+通过通过docker compose部署node-exporter、cadvisor客户端
 ***
 使用Grafana+Prometheus+alertmanager+cadvisor+node_exporter组合，对服务器上Docker、宿主机状态等进行监控与报警。
 
