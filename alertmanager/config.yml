@@ -1,0 +1,68 @@
+global:
+  #163服务器
+  #smtp_smarthost: 'smtp.qq.com:465'
+  smtp_smarthost: 'smtp.163.com:25'
+  
+  #发邮件的邮箱
+  #smtp_from: 'your-email@foxmail.com'
+  smtp_from: 'xxxxxxx@163.com'
+  
+  #发邮件的邮箱用户名，也就是你的邮箱　　　　　
+  #smtp_auth_username: 'your-email@foxmail.com'
+  smtp_auth_username: 'xxxxxx163.com'
+  
+  #发邮件的邮箱密码 这儿的密码是第三方授权码
+  #smtp_auth_password: 'your-password'
+  smtp_auth_password: 'xxxxxx'
+  
+  #进行tls验证
+  #smtp_require_tls: true
+  smtp_require_tls: false
+
+
+
+route:
+  group_by: ['alertname','instance']
+  group_wait: 30s
+  group_interval: 5m
+  repeat_interval: 12h
+  receiver: 'default'
+
+  routes:
+  - match_re:
+      instance: "xxx.xxx.xxx.xxx:xxxxx|xxx.xxx.xxx.xxx:xxxxx"
+    receiver: '唐丽君'
+  - receiver: 'other'
+
+receivers:
+- name: '唐丽君'
+  email_configs:
+  - to: 'xxxxx.com'
+
+- name: 'other'
+  email_configs:
+  - to: 'xxxx.com'
+
+- name: 'default'
+  email_configs:
+  - to: 'xxxx.com'
+
+# 抑制规则
+# inhibit_rules:
+#  - source_match:
+#      alertname: 高负载警告
+#      severity: critical
+#    target_match:
+#      severity: normal
+#    equal:
+#      - instance
+
+# 抑制规则
+# 减少重复警告，如果同1台机器在短时间内多次触发相同的 高负载警告 的 警告 级别告警，只会发送1次，后续的相同告警将被抑制。这有助于减少告警风暴，避免重复告警对接收者造成干扰
+inhibit_rules:
+  - source_match:
+      alertname: 高负载警告
+      severity: '警告'
+    target_match:
+      severity: '警告'
+    equal: ['alertname', 'instance']
