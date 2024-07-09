@@ -30,11 +30,11 @@ scrape_configs:
 # 微商城主机
   - job_name: '112mysql'
     static_configs:
-      - targets: ['172.30.225.112:39100']
+      - targets: ['xxx.xxx.xxx.xxx:xxxxx']
 
   - job_name: '115linux'
     static_configs:
-      - targets: ['172.30.225.115:39200']
+      - targets: ['xxx.xxx.xxx.xxx:xxxxx']
 
 # 内部linux主机
 
