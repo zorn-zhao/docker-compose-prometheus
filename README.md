@@ -42,7 +42,7 @@ tee /etc/docker/daemon.json <<-'EOF'
         "https://docker.nju.edu.cn"
     ],
     "insecure-registries": [
-        "192.168.188.251:8081"
+        "192.168.188.251:8081"  # 私有harbor地址
     ]
 }
 EOF
