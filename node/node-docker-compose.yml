@@ -1,0 +1,39 @@
+#监控node节点+节点上的容器
+
+version: '3.2'
+services:
+  nodeexporter:
+    image: 192.168.188.251:8081/prometheus/node-exporter:v1.7.0 # harbor私有库地址
+    container_name: nodeexporter
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+
+    environment:
+      TZ: Asia/Shanghai
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.rootfs=/rootfs'
+      - '--path.sysfs=/host/sys'
+      - '--collector.filesystem.ignored-mount-points=^/(sys|proc|dev|host|etc)($$|/)'
+    labels:
+      org.label-schema.group: "monitoring"
+    restart: always
+    network_mode: host
+
+  cadvisor:
+    image: 192.168.188.251:8081/cadvisor/cadvisor:v0.33.0
+    container_name: cadvisor
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker:/var/lib/docker:ro
+    ports:
+      - 8080:8080
+    environment:
+      TZ: Asia/Shanghai
+    labels:
+      org.label-schema.group: "monitoring"
+    restart: always
