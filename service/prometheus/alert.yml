@@ -1,0 +1,234 @@
+groups:
+- name: 服务器状态
+  rules:
+
+  # Alert for any instance that is unreachable for >2 minutes.
+# 服务器存报警
+  - alert: 服务器已掉线
+    expr: up == 0
+    for: 2m
+    labels:
+      severity: 警告
+    annotations:
+      summary: "服务器 {{ $labels.instance }} 已掉线"
+      description: "{{ $labels.instance }} 服务器 {{ $labels.job }}掉线超过2分钟 "
+
+# 高负载
+  - alert: 高负载告警
+    expr: node_load1 > 0.95
+    for: 2m
+    labels:
+      severity: 警告
+    annotations:
+      summary: "服务器 {{ $labels.instance }} 处在高负载状态"
+      description: "{{ $labels.instance }} 服务器 {{ $labels.job }} 负载过高已超过2分钟"
+
+
+# Windows 服务器状体
+#- name: Windows 服务器状态
+#  rules:
+#  - alert: Windows服务器收集器告警
+#    expr: windows_exporter_collector_success == 0
+#    for: 0m
+#    labels:
+#      severity: 严重
+#    annotations:
+#      summary: "Windows收集器错误 (instance {{ $labels.instance }})"
+#      description: "收集器 {{ $labels.collector }} 不工作了\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+  
+# Windows 服务器CPU使用率
+  - alert: Windows服务器CPU使用率-80
+    expr: 100 - (avg by (instance) (rate(windows_cpu_time_total{mode="idle"}[2m])) * 100) > 80
+    for: 2m
+    labels:
+      severity: 警告
+    annotations:
+      summary: Windows 服务器 CPU 使用率 (instance {{ $labels.instance }})
+      description: "CPU 使用率已超过 80%\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+
+# Windows 服务器CPU使用率
+  - alert: Windows服务器CPU使用率-90
+    expr: 100 - (avg by (instance) (rate(windows_cpu_time_total{mode="idle"}[2m])) * 100) > 90
+    for: 2m
+    labels:
+      severity: 严重
+    annotations:
+      summary: Windows 服务器 CPU 使用率 (instance {{ $labels.instance }})
+      description: "CPU 使用率已超过 90%\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+
+# Windows 服务器内存使用率 
+  - alert: Windows服务器内存使用率-80
+    expr: 100 - ((windows_os_physical_memory_free_bytes / windows_cs_physical_memory_bytes) * 100) > 80
+    for: 2m
+    labels:
+      severity: 警告
+    annotations:
+      summary: Windows 服务器内存使用率为 (instance {{ $labels.instance }})
+      description: "内存使用率超过 80%\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+
+# Windows 服务器内存使用率 
+  - alert: Windows服务器内存使用率-90
+    expr: 100 - ((windows_os_physical_memory_free_bytes / windows_cs_physical_memory_bytes) * 100) > 90
+    for: 2m
+    labels:
+      severity: 严重
+    annotations:
+      summary: Windows 服务器内存使用率为 (instance {{ $labels.instance }})
+      description: "内存使用率超过 90%\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+
+# Windows 服务器磁盘使用率
+  - alert: Windows服务器磁盘使用率-80
+    expr: 100.0 - 100 * ((windows_logical_disk_free_bytes / 1024 / 1024 ) / (windows_logical_disk_size_bytes / 1024 / 1024)) > 80
+    for: 2m
+    labels:
+      severity: 警告
+    annotations:
+      summary: Windows 服务器磁盘使用率为 (instance {{ $labels.instance }})
+      description: "磁盘使用率超过 80%\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+  
+  
+# Windows 服务器磁盘使用率
+  - alert: Windows服务器磁盘使用率-90
+    expr: 100.0 - 100 * ((windows_logical_disk_free_bytes / 1024 / 1024 ) / (windows_logical_disk_size_bytes / 1024 / 1024)) > 90
+    for: 2m
+    labels:
+      severity: 严重
+    annotations:
+      summary: Windows 服务器磁盘使用率为 (instance {{ $labels.instance }})
+      description: "磁盘使用率超过 90%\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+
+
+- name: Linux 服务器状态
+  rules:    
+#  cpu使用率告警
+   - alert: cpu使用率告警-80
+     expr: 100 - (avg by (instance)(irate(node_cpu_seconds_total{mode="idle"}[1m]) )) * 100 > 80
+     for: 2m
+     labels:
+       severity: 警告
+     annotations:
+       description: "服务器: CPU使用超过80%！(当前值: {{ $value }}%)" 
+
+#  cpu使用率告警
+   - alert: cpu使用率告警-90
+     expr: 100 - (avg by (instance)(irate(node_cpu_seconds_total{mode="idle"}[1m]) )) * 100 > 90
+     for: 2m
+     labels:
+       severity: 严重
+     annotations:
+       description: "服务器: CPU使用超过90%！(当前值: {{ $value }}%)"
+
+
+# 内存使用率告警
+   - alert: 内存使用率告警-80
+     expr: (node_memory_MemTotal_bytes - (node_memory_MemFree_bytes+node_memory_Buffers_bytes+node_memory_Cached_bytes )) / node_memory_MemTotal_bytes * 100 > 80
+     for: 2m
+     labels:
+       severity: 警告
+     annotations:
+       description: "服务器: 内存使用超过80%！(当前值: {{ $value }}%)"
+
+# 内存使用率告警
+   - alert: 内存使用率告警-90
+     expr: (node_memory_MemTotal_bytes - (node_memory_MemFree_bytes+node_memory_Buffers_bytes+node_memory_Cached_bytes )) / node_memory_MemTotal_bytes * 100 > 90
+     for: 2m
+     labels:
+       severity: 严重
+     annotations:
+       description: "服务器: 内存使用超过90%！(当前值: {{ $value }}%)"
+
+
+# 磁盘告警
+   - alert: 磁盘告警-80
+     expr: (node_filesystem_size_bytes - node_filesystem_avail_bytes) / node_filesystem_size_bytes * 100 > 80
+     for: 2m
+     labels:
+       severity: 警告
+     annotations:
+       description: "服务器: 磁盘设备: 使用超过80%！(挂载点: {{ $labels.mountpoint }} 当前值: {{ $value }}%)"
+
+
+# 磁盘告警
+   - alert: 磁盘告警-90
+     expr: (node_filesystem_size_bytes - node_filesystem_avail_bytes) / node_filesystem_size_bytes * 100 > 90
+     for: 2m
+     labels:
+       severity: 严重
+     annotations:
+       description: "服务器: 磁盘设备: 使用超过90%！(挂载点: {{ $labels.mountpoint }} 当前值: {{ $value }}%)"
+
+
+
+# 监控磁盘还有7天满告警
+#   - alert: 磁盘还有7天满告警
+#     expr: predict_linear(node_filesystem_free_bytes{mountpoint="/"}[1h], 7*24*3600) < 0
+#     for: 2m
+#     labels:
+#       severity: 严重
+#     annotations:
+#       summary: " {{ $labels.instance }} 上的磁盘将在大约7天内填满"
+
+
+
+# MYSQL数据库监控规则
+- name: MySQL数据库监控规则
+  rules:
+#mysql状态检测
+  - alert: MySQL Status
+    expr: mysql_up == 0
+    for: 10s
+    labels:
+      severity: warning
+    annotations:
+      summary: "{{ $labels.instance }} Mysql服务 !!!"
+      description: "{{ $labels.instance }} Mysql服务不可用  请检查!"
+
+#mysql主从IO线程停止时触发告警
+  - alert: MySQL Slave IO Thread Status
+    expr: mysql_slave_status_slave_io_running == 0
+    for: 5s
+    labels:
+      severity: warning
+    annotations:
+      summary: "{{ $labels.instance }} Mysql从节点IO线程"
+      description: "Mysql主从IO线程故障，请检测!"
+
+#mysql主从sql线程停止时触发告警
+  - alert: MySQL Slave SQL Thread Status 
+    expr: mysql_slave_status_slave_sql_running == 0
+    for: 5s 
+    labels:
+      severity: error
+    annotations: 
+      summary: "{{$labels.instance}}: MySQL Slave SQL Thread has stop !!!"
+      description: "检测MySQL主从SQL线程运行状态"
+      
+#mysql主从延时状态告警
+  - alert: MySQL Slave Delay Status 
+    expr: mysql_slave_status_sql_delay == 30
+    for: 5s 
+    labels:
+      severity: warning
+    annotations: 
+      summary: "{{$labels.instance}}: MySQL 主从延迟超过 30s !!!"
+      description: "检测MySQL主从延时状态"
+      
+#mysql连接数告警
+  - alert: Mysql_Too_Many_Connections
+    expr: rate(mysql_global_status_threads_connected[5m]) > 200
+    for: 2m
+    labels:
+      severity: warning
+    annotations:
+      summary: "{{$labels.instance}}: 连接数过多"
+      description: "{{$labels.instance}}: 连接数过多，请处理 ,(current value is: {{ $value }})！"  
+ 
+ #mysql慢查询有点多告警
+  - alert: Mysql_Too_Many_slow_queries
+    expr: rate(mysql_global_status_slow_queries[5m]) > 3
+    for: 2m
+    labels:
+      severity: warning
+    annotations:
+      summary: "{{$labels.instance}}: 慢查询有点多，请检查处理！"
+      description: "{{$labels.instance}}: Mysql slow_queries is more than 3 per second ,(current value is: {{ $value }})"

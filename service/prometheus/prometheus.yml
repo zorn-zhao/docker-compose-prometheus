@@ -1,0 +1,227 @@
+# my global config
+global:
+  scrape_interval:     15s # Set the scrape interval to every 15 seconds. Default is every 1 minute.
+  evaluation_interval: 15s # Evaluate rules every 15 seconds. The default is every 1 minute.
+  # scrape_timeout is set to the global default (10s).
+
+# Alertmanager configuration
+alerting:
+  alertmanagers:
+  - static_configs:
+      - targets: ['alertmanager:9093']
+      # - alertmanager:9093
+
+# Load rules once and periodically evaluate them according to the global 'evaluation_interval'.
+rule_files:
+  - "alert.yml"
+  # - "first_rules.yml"
+  # - "second_rules.yml"
+
+# A scrape configuration containing exactly one endpoint to scrape:
+# Here it's Prometheus itself.
+scrape_configs:
+  # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
+  - job_name: 'prometheus'
+    # Override the global default and scrape targets from this job every 5 seconds.
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['localhost:9090']
+
+# 微商城主机
+  - job_name: '112mysql'
+    static_configs:
+      - targets: ['xxx.xxx.xxx.xxx:xxxxx']
+
+  - job_name: '115linux'
+    static_configs:
+      - targets: ['xxx.xxx.xxx.xxx:xxxxx']
+
+# 内部linux主机
+
+  - job_name: '117linux'
+    static_configs:
+      - targets: ['192.168.188.117:9100']
+
+  - job_name: '117cadvisor'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['192.168.188.117:8080']
+
+  - job_name: '132linux'
+    static_configs:
+      - targets: ['192.168.188.132:9100']
+
+  - job_name: '132cadvisor'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['192.168.188.132:8080']
+
+  - job_name: '139linux'
+    static_configs:
+      - targets: ['192.168.188.139:9100']
+
+  - job_name: '139cadvisor'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['192.168.188.139:8080']
+
+
+  - job_name: '145linux'
+    static_configs:
+      - targets: ['192.168.188.145:9100']
+
+  - job_name: '145cadvisor'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['192.168.188.145:8080']
+
+
+  - job_name: '146linux'
+    static_configs:
+      - targets: ['192.168.188.146:9100']
+
+  - job_name: '146cadvisor'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['192.168.188.146:8080']
+
+  - job_name: '148linux'
+    static_configs:
+      - targets: ['192.168.188.148:9100']
+
+  - job_name: '148cadvisor'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['192.168.188.148:8080']
+
+
+  - job_name: '158linux'
+    static_configs:
+      - targets: ['192.168.188.158:9100']
+
+  - job_name: '158cadvisor'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['192.168.188.158:8080']
+
+
+  - job_name: '159linux'
+    static_configs:
+      - targets: ['192.168.188.159:9100']
+
+  - job_name: '159cadvisor'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['192.168.188.159:8080']
+
+  - job_name: '199linux'
+    static_configs:
+      - targets: ['192.168.188.199:9100']
+
+  - job_name: '199cadvisor'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['192.168.188.199:8080']
+
+
+  - job_name: '225linux'
+    static_configs:
+      - targets: ['192.168.188.225:9100']
+
+  - job_name: '225cadvisor'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['192.168.188.225:8080']
+
+
+  - job_name: '227linux'
+    static_configs:
+      - targets: ['192.168.188.227:9100']
+
+  - job_name: '227cadvisor'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['192.168.188.227:8080']
+
+
+  - job_name: '229linux'
+    static_configs:
+      - targets: ['192.168.188.229:9100']
+
+  - job_name: '229cadvisor'
+    scrape_interval: 5s
+    static_configs:
+      - targets: ['192.168.188.229:8080']
+
+# 内部 Windows 主机
+  - job_name: '70windows'
+    static_configs:
+      - targets: ['192.168.188.70:9182']
+
+  - job_name: '71windows'
+    static_configs:
+      - targets: ['192.168.188.71:9182']
+
+  - job_name: '72windows'
+    static_configs:
+      - targets: ['192.168.188.72:9182']
+
+  - job_name: '86windows'
+    static_configs:
+      - targets: ['192.168.188.86:9182']
+
+  - job_name: '147windows'
+    static_configs:
+      - targets: ['192.168.188.147:9182']
+
+  - job_name: '149windows'
+    static_configs:
+      - targets: ['192.168.188.149:9182']
+
+  - job_name: '150windows'
+    static_configs:
+      - targets: ['192.168.188.150:9182']
+
+  - job_name: '161windows'
+    static_configs:
+      - targets: ['192.168.188.161:9182']
+
+  - job_name: '119windows'
+    static_configs:
+      - targets: ['192.168.188.119:9182']
+
+  - job_name: '133windows'
+    static_configs:
+      - targets: ['192.168.188.133:9182']
+
+  - job_name: '135windows'
+    static_configs:
+      - targets: ['192.168.188.135:9182']
+
+  - job_name: '137windows'
+    static_configs:
+      - targets: ['192.168.188.137:9182']
+
+  - job_name: '138windows'
+    static_configs:
+      - targets: ['192.168.188.138:9182']
+
+  - job_name: '110windows'
+    static_configs:
+      - targets: ['192.168.188.110:9182']
+
+
+# 监控本地
+#  - job_name: 'cadvisor'
+    # Override the global default and scrape targets from this job every 5 seconds.
+#    scrape_interval: 5s
+#    static_configs:
+#      - targets: ['cadvisor:8080']
+
+#  - job_name: 'node-exporter'
+    # Override the global default and scrape targets from this job every 5 seconds.
+    # metrics_path defaults to '/metrics'
+    # scheme defaults to 'http'.
+#    scrape_interval: 5s
+#    static_configs:
+#      - targets: ['node_exporter:9100']
