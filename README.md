@@ -22,7 +22,7 @@ docker-prometheus/
     └── prometheus.yml
 ```
 
-安装docker-compose 
+安装docker-compose：
 ```
 1、docker-compose文件下载下来
 2、chmod +x /usr/local/bin/docker-compose
