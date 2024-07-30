@@ -49,5 +49,12 @@ EOF
 ```
 重新加载并重启docker服务：
 	systemctl daemon-reload && systemctl restart docker 
+
+ grafana仪表盘模板ID:
+ ```
+    13868windows_exporter for Prometheus Dashboard EN
+    12633Linux主机详情
+    7362MySQL Overview
+```
 # 文中的镜像加速地址已经失效，请自行网上寻找能用的地址
 
