@@ -23,6 +23,7 @@ docker-prometheus/
 ```
 
 安装docker-compose 
+```
 1、docker-compose文件下载下来
 2、chmod +x /usr/local/bin/docker-compose
 3、ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
@@ -30,7 +31,7 @@ docker-prometheus/
 	docker -version # 返回版本号能正常使用
 5、删除docker-compose 直接执行：
 	rm /usr/local/bin/docker-compose
-
+```
 添加镜像加速：
 ```
 tee /etc/docker/daemon.json <<-'EOF'
