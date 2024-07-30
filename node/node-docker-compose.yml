@@ -3,7 +3,7 @@
 version: '3.2'
 services:
   nodeexporter:
-    image: 192.168.188.251:8081/prometheus/node-exporter:v1.7.0 # harbor私有库地址
+    image: 192.168.188.251:8081/node_exporter/node_exporter:v1.8.2    # harbor私有库地址
     container_name: nodeexporter
     volumes:
       - /proc:/host/proc:ro
