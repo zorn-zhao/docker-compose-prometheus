@@ -10,7 +10,7 @@
 
 文件结构：
 ```shell
-docker-prometheus/
+docker-compose-prometheus/service/
 ├── alertmanager
 │   └── config.yml
 ├── docker-compose.yml
